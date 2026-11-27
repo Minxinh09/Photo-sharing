@@ -1,12 +1,13 @@
-/**
- * fetchModel - Fetch a model from the web server.
- *
- * @param {string} url      The URL to issue the GET request.
- *
- */
 function fetchModel(url) {
-  // Tự động gắn tiền tố server nếu url truyền vào chỉ có dạng "/user/list"
-  const fullUrl = url.startsWith("http") ? url : `http://localhost:8081${url}`;
+  const BASE_URL = "https://photo-sharing-backend-l8ki.onrender.com";
+  
+  let fullUrl = url;
+  if (!fullUrl.startsWith("http")) {
+    fullUrl = `${BASE_URL}${url}`;
+  } else if (fullUrl.includes("localhost:8081")) {
+    fullUrl = fullUrl.replace("http://localhost:8081", BASE_URL);
+  }
+
   return fetch(fullUrl)
     .then((response) => {
       if (!response.ok) {
@@ -19,4 +20,5 @@ function fetchModel(url) {
       throw error;
     });
 }
+
 export default fetchModel;
